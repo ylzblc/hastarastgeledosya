@@ -55,7 +55,7 @@ void textDosya(FILE *okuptr)
 {
     FILE *yazptr;
     struct hasta hastaBilgi = {0,"","",""};
-    if((yazptr = fopen("hastalar.dat", "w")) == NULL);
+    if((yazptr = fopen("hastalar.dat", "w")) == NULL)
         printf("Dosya acilamadi\n");
     else
     {
@@ -103,7 +103,7 @@ void yeniKayit(FILE *fptr)
         printf("Ad, soyad, hastalik gir: \n");
         scanf("%s%s%s", hastaBilgi.ad, hastaBilgi.soyad, hastaBilgi.hastalik);
         fseek(fptr,(hastaID-1)*sizeof(struct hasta),SEEK_SET);
-        fwrite(&hesapBilgi, sizeof(struct hasta),1,fptr);
+        fwrite(&hastaBilgi, sizeof(struct hasta),1,fptr);
     }
 
 }
@@ -113,4 +113,11 @@ void listele(FILE *fptr)
     struct hasta hastaBilgi = {0, "", "", ""};
 
     printf("%s%s%s%s\n","TC kimlik", "Ad", "Soyad", "Hastalik");
+    while(!feof(fptr))
+    {
+        fread(&hastaBilgi, sizeof(struct hasta),1,fptr);
+        if(hastaBilgi.tcKimlik!=0)
+        printf("%lld%s%s%s\n", hastaBilgi.tcKimlik, hastaBilgi.ad, hastaBilgi.soyad, hastaBilgi.hastalik);
+    }
+    fclose(fptr);
 }
